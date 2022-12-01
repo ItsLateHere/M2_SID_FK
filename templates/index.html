@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fake news</title>
+</head>
+<body>
+<form action="" id="fake_form">
+    <textarea name="fake_post" id="fake_post" cols="30" rows="10"></textarea>
+    <br>
+    <button type="button" name="check" id="btn_check">CHECK</button>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script>
+    $("#btn_check").click(function () {
+        $.ajax({
+            url: "/api/faketest",
+            type: 'POST',
+            data: JSON.stringify({
+                "data" : $("#fake_post").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                {#alert("ok "+result[0].class)#}
+                console.log(result[0])
+            }
+        });
+    });
+</script>
+</body>
+</html>
