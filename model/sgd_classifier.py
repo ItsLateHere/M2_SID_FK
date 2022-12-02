@@ -25,7 +25,7 @@ def wordopt(text):
     return text
 
 df_fake = pd.read_csv("../data/Fake.csv")
-df_true = pd.read_csv("../data//True.csv")
+df_true = pd.read_csv("../data/True.csv")
 
 df_fake["class"] = 0
 df_true["class"] = 1
