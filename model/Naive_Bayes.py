@@ -48,7 +48,7 @@ df["text"] = df["text"].apply(wordopt)
 x = df["text"]
 y = df["class"]
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.40)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.30)
 
 vectorization = TfidfVectorizer()
 xv_train = vectorization.fit_transform(x_train)
@@ -63,11 +63,20 @@ print("Training score: ", score)
 
 predicted = clf.predict(xv_test)
 
-print(predicted)
-
-
 print("precision_score : ", precision_score(y_test, predicted))
 print("Accuracy : ", accuracy_score(y_test, predicted))
-print('Matrice de confusion :\n', metrics.confusion_matrix(y_test, predicted))
+#print('Matrice de confusion :\n', metrics.confusion_matrix(y_test, predicted))
 
 print(classification_report(y_test, predicted))
+from sklearn.metrics import confusion_matrix
+
+matrix = confusion_matrix(y_true=y_test, y_pred=predicted)
+print(matrix)
+import seaborn as snNew
+import matplotlib.pyplot as pltNew
+
+DetaFrame_cm=pd.crosstab(y_test,predicted,rownames=['Actual'],colnames=['Predectide'])
+snNew.heatmap(DetaFrame_cm, annot = True, fmt = '.0f')
+
+pltNew.show()
+
