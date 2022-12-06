@@ -74,9 +74,9 @@ class SVM:
         # xv_test = vectorization.transform(x_test)
         # vtest_x = vectorization.transform(test_x)
 
-        clf = Pipeline([('tfidf', TfidfVectorizer(max_features=3000),),
+        clf = Pipeline([('tfidf', TfidfVectorizer(),),
                         ('svm', SVC(kernel='linear', C=1.0, probability=True))])
-        clf.fit_transform(x_train, y_train)
+        clf.fit(x_train, y_train)
         predictions = clf.predict(x_test)
         cm = confusion_matrix(y_test, predictions, labels=clf.classes_)
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels = clf.classes_)

@@ -14,7 +14,7 @@ def hello_world():  # put application's code here
     input=args.get("input")
     print(input)
     svm=SVM()
-    svm.train()
+    #svm.train()
     out=svm.predict(input)
     return input+' '+out
 
