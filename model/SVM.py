@@ -19,7 +19,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 class SVM:
-    filename = "model/SVM.sav"
+    filename = "C:\\Users\\Abderrahim\\PycharmProjects\\M2_SID_FK\\model\\SVM.sav"
     def wordopt(self, text):
         text = text.lower()
         text = re.sub('\[.*?\]', '', text)

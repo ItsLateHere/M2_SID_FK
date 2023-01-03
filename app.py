@@ -1,10 +1,13 @@
 from flask import Flask, render_template
 from flask import Flask,request
 from api.api_controller import api_controller
+from flask_cors import CORS, cross_origin
 from model.SVM import SVM
 
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.register_blueprint(api_controller)
 
 @app.route('/')
