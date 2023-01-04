@@ -95,9 +95,11 @@ class SVM:
         out = self.clf.predict_proba(df["text"])
         print(out)
         if (out[0][0] > out[0][1]):
-            return "is false with " + str(out[0][0]) + " certainty."
+            return 'is false with {:.2f} certainty.'.format(out[0][0]*100)
+            # return "is false with " + str(out[0][0]*100) + " certainty."
         else:
-            return "is true with " + str(out[0][1]) + " certainty."
+            return 'is false with {:.2f} certainty.'.format(out[0][1] * 100)
+            # return "is true with " + str(out[0][1]*100) + " certainty."
 
 # print(clf.predict_proba(xv_test))
 # pred = clf.predict(xv_test)
