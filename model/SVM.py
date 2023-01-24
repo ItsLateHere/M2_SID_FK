@@ -118,8 +118,6 @@ class SVM:
         DATA = StringIO("text\n" + input_string)
         df = pd.read_csv(DATA, sep=';')
         df["text"] = df["text"].apply(self.wordopt)
-        vectorization = TfidfVectorizer()
-        # input_v = vectorization.fit_transform(df["text"])
 
         out = self.clf.predict_proba(df["text"])
         print(out)
