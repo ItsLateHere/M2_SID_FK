@@ -28,24 +28,27 @@ def input_is_fake():
 
 @api_controller.route("/api/faketest", methods=['POST'])
 def is_fake():
-    co_fake = 0
-    svm = SVM()
-    request_data = request.get_json()
+    try:
+        co_fake = 0
+        svm = SVM()
+        request_data = request.get_json()
 
-    print(request_data)
-    for a in request_data:
-        result = svm.predict(svm.wordopt(a["tweet_text"]))
+        print(request_data)
+        for a in request_data:
+            result = svm.predict(svm.wordopt(a["tweet_text"]))
 
-        if result[:13] == "is false with":
-            co_fake = co_fake + 1
-            a["is_fake"] = 1
-            a["msg_res"] = result
-        else:
-            a["is_fake"] = 0
-            a["msg_res"] = result
+            if result[:13] == "is false with":
+                co_fake = co_fake + 1
+                a["is_fake"] = 1
+                a["msg_res"] = result
+            else:
+                a["is_fake"] = 0
+                a["msg_res"] = result
 
-    saveTweets(request_data)
-    return response_format(request_data, co_fake, 200)
+        return response_format(request_data, co_fake, 200)
+    finally:
+        saveTweets(request_data)
+
 
 
 def response_format(articles_list, nbr_fake, response_code):
