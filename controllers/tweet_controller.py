@@ -48,7 +48,7 @@ def runSaveInSQL():
         idCompte = compteDao.findIdCompte(a['username'])
         if idCompte == 0:
             # ID_Compte, username, name, date_creation, handle, NB_followers, verifcation, protected
-            rowC = [a['username'], a['name'], a['compte_created_at'], '', a['followers_count'], a['verified'],
+            rowC = [a['username'], a['name'], a['compte_created_at'], a['followers_count'], a['verified'],
                     a['protected']]
             idCompte = compteDao.addCompte(rowC)
 

@@ -20,6 +20,6 @@ class CompteDao(object):
         return 0
 
     def findIdCompte(self, keyword):
-        res = self.__db.selectIdEqual(self.__tableName, self.__fieldId, "username", keyword)
+        res = self.__db.selectIdEqual(self.__tableName, self.__fieldId, "handle", keyword)
         if res == None: return 0
         return res[1][0] if len(res) == 2 else 0
