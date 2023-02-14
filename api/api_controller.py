@@ -1,7 +1,7 @@
 # Endpoints of the app
 from flask import Flask, request, jsonify, Blueprint
 from model.SVM import SVM
-from controllers.tweet_controller import *
+from controllers.tweet_controller import saveTweets
 
 api_controller = Blueprint('api_controller', __name__)
 

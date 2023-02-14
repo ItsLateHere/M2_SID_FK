@@ -6,8 +6,10 @@ import os
 
 from database import Database, MySQLDataSource
 
+from api.api_twitter import *
+
 from dao.CompteDao import *
-from dao.DateDao import *
+# from dao.DateDao import *
 from dao.PostDao import *
 from dao.ReactionDao import *
 from dao.SubjectDao import *
@@ -16,14 +18,14 @@ from dao.ZoneGeoDao import *
 dataSource = MySQLDataSource("dbt_twitter")
 
 dbC = Database(dataSource)
-dbD = Database(dataSource)
+# dbD = Database(dataSource)
 dbP = Database(dataSource)
 dbR = Database(dataSource)
 dbS = Database(dataSource)
 dbZ = Database(dataSource)
 
 compteDao = CompteDao(dbC)
-dateDao = DateDao(dbD)
+# dateDao = DateDao(dbD)
 postDao = PostDao(dbP)
 reactionDao = ReactionDao(dbR)
 subjectDao = SubjectDao(dbS)
@@ -36,18 +38,27 @@ def runSaveInSQL():
     fl = open(fileName)
     for line in fl:
         a = json.loads(line)
-        idCompte = compteDao.findIdCompte(a['poster_user_tag'])
+        # {"idCompte": 416529990, "name": "Khadija", "username": "khad_ij", "compte_created_at": "2023-02-13 12:57:31",
+        #  "protected": false, "verified": false, "location": "Royaume du Maroc", "followers_count": 12289,
+        #  "text": "Bonjour. Question existentielle pourquoi il nya plus de moutarde au McDo ?",
+        #  "idTweet": 1625116962073325568, "geo": null, "retweet_count": 3, "reply_count": 40, "like_count": 59,
+        #  "quote_count": 4, "url": "https://twitter.com/khad_ij/statuses/1625116962073325568", "confidance": 100.0,
+        #  "is_fake": 0}
+
+        idCompte = compteDao.findIdCompte(a['username'])
         if idCompte == 0:
-            rowC = [a['poster_user_tag'], '', '', '', '']
+            # ID_Compte, username, name, date_creation, handle, NB_followers, verifcation, protected
+            rowC = [a['username'], a['name'], a['compte_created_at'], '', a['followers_count'], a['verified'],
+                    a['protected']]
             idCompte = compteDao.addCompte(rowC)
-        idDate = dateDao.findIdDate(a['date_time_post'])
-        if idDate == 0:
-            idDate = dateDao.addDate([a['date_time_post']])
-        rowR = [date.today(), "", a['nbr_like'], a['nbr_comment'], a['nbr_retweet']]
+
+        rowR = [date.today(), "", a['like_count'], a['reply_count'], a['retweet_count'], a['quote_count']]
         idReaction = reactionDao.addReaction(rowR)
-        rowP = [a['tweet_text'], '', 0,
-                a['is_fake'], a['msg_res'],
-                0, idDate, idCompte, idReaction, 0]
+
+        # ID_Post, text, URL, ID_externe_tweet, classe,confidence,date,
+        # ID_Subject,ID_Compte,ID_Reaction, ID_Zone_geo
+        rowP = [a['text'], a['url'], a['id_Tweet'], a['is_fake'], a['confidance'],
+                a['tweet_created_at'], 0, idCompte, idReaction, 0]
         idPost = postDao.addPost(rowP)
     fl.close()
     os.remove(fileName)
@@ -55,7 +66,7 @@ def runSaveInSQL():
 
 def saveInSQL():
     global threadRunSaveInSQL
-    time.sleep(60 * 1)
+    time.sleep(30)
     threadRunSaveInSQL = threading.Thread(target=runSaveInSQL, args=())
     threadRunSaveInSQL.start()
 
@@ -65,29 +76,14 @@ def saveInJson(article_list):
     print(routeFile)
     f = open(routeFile, 'a')
     for a in article_list:
-        a['poster_user_tag'] = a['poster_user_tag'][1:-1]
-        a['date_time_post'] = a['date_time_post'][:10]
-        a['tweet_text'] = a['tweet_text'].strip()
-        a['msg_res'] = float(a['msg_res'][13:19])
-
-        try:
-            a['nbr_like'] = int(a['nbr_like'])
-        except:
-            a['nbr_like'] = 0
-
-        try:
-            a['nbr_comment'] = int(a['nbr_comment'])
-        except:
-            a['nbr_comment'] = 0
-
-        try:
-            a['nbr_retweet'] = int(a['nbr_retweet'])
-        except:
-            a['nbr_retweet'] = 0
-
-        a.pop('display_id')
-        a.pop('poster_user')
-        json.dump(a, f)
+        user = get_User(a['poster_user_tag'][1:])
+        print(user)
+        tweet = get_Tweet(a['tweet_id'].split('/')[-1])
+        print(tweet)
+        post = {**user, **tweet,
+                'url': 'https://twitter.com/' + user['username'] + '/statuses/' + str(tweet['id_Tweet']),
+                'confidance': float(a['msg_res'][13:19]), "is_fake": a["is_fake"]}
+        json.dump(post, f)
         f.write("\n")
     f.close()
 
