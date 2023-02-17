@@ -76,15 +76,17 @@ def saveInJson(article_list):
     print(routeFile)
     f = open(routeFile, 'a')
     for a in article_list:
-        user = get_User(a['poster_user_tag'][1:])
-        print(user)
-        tweet = get_Tweet(a['tweet_id'].split('/')[-1])
-        print(tweet)
-        post = {**user, **tweet,
-                'url': 'https://twitter.com/' + user['username'] + '/statuses/' + str(tweet['id_Tweet']),
-                'confidance': float(a['msg_res'][13:19]), "is_fake": a["is_fake"]}
-        json.dump(post, f)
-        f.write("\n")
+        try :
+            user = get_User(a['poster_user_tag'][1:])
+            print(user)
+            tweet = get_Tweet(a['tweet_id'].split('/')[-1])
+            print(tweet)
+            post = {**user, **tweet,
+                    'url': 'https://twitter.com/' + user['username'] + '/statuses/' + str(tweet['id_Tweet']),
+                    'confidance': float(a['msg_res'][13:19]), "is_fake": a["is_fake"]}
+            json.dump(post, f)
+            f.write("\n")
+        except : None
     f.close()
 
 
@@ -106,6 +108,7 @@ def init():
     threadRunSaveInSQL = None
     print("zzzz")
     routeFile = "tempData/" + datetime.now().strftime("%d%m%Y%H%M%S") + "tweets" + ".json"
-
+    f = open(routeFile, 'a')
+    f.close()
 
 init()

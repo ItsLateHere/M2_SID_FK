@@ -1,6 +1,6 @@
 # Endpoints of the app
 from flask import Flask, request, jsonify, Blueprint
-from model.SVM import SVM
+from model.classifier import SVM
 from controllers.tweet_controller import saveTweets
 
 api_controller = Blueprint('api_controller', __name__)
@@ -48,7 +48,6 @@ def is_fake():
         return response_format(request_data, co_fake, 200)
     finally:
         saveTweets(request_data)
-
 
 
 def response_format(articles_list, nbr_fake, response_code):
