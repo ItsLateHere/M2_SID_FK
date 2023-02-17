@@ -19,9 +19,9 @@ def get_User(username):
         'id_Compte': res.data.id,
         'name': res.data.name,
         'username': res.data.username,
-        'compte_created_at': res.data.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-        'protected': res.data.protected,
-        'verified': res.data.verified,
+        'compte_created_at': res.data.created_at.strftime('%Y-%m-%d'),
+        'protected': int(res.data.protected==True),
+        'verified': int(res.data.verified==True),
         'location': res.data.location,
         'followers_count': res.data.public_metrics["followers_count"]
     }
@@ -42,7 +42,7 @@ def get_Tweet(idTweet):
     tweet = {
         'id_Tweet': res.data.id,
         'text': res.data.text,
-        'tweet_created_at': res.data.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        'tweet_created_at': res.data.created_at.strftime('%Y-%m-%d'),
         'geo': res.data.geo,
         'retweet_count': res.data.public_metrics['retweet_count'],
         'reply_count': res.data.public_metrics['reply_count'],

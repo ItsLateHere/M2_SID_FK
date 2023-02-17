@@ -1,9 +1,9 @@
 import mysql.connector
 
 class MySQLDataSource(object):
-    __host = "localhost"
-    __user = "root"
-    __password = ""
+    __host = "83.115.75.78"
+    __user = "fk"
+    __password = "fk"
     def __init__(self, databaseName = ""):
         self.__databaseName = databaseName
 
@@ -19,8 +19,9 @@ class MySQLDataSource(object):
                 print('connecion database ' + self.__databaseName + " ...")
                 return connection
             except mysql.connector.Error as error:
-                return None
                 print("Failed to connect on database : " + self.__databaseName)
+                return None
+
         else :
             print("Name of the database wasn't declared")
             return None

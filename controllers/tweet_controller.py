@@ -12,8 +12,8 @@ from dao.CompteDao import *
 # from dao.DateDao import *
 from dao.PostDao import *
 from dao.ReactionDao import *
-from dao.SubjectDao import *
-from dao.ZoneGeoDao import *
+# from dao.SubjectDao import *
+# from dao.ZoneGeoDao import *
 
 dataSource = MySQLDataSource("dbt_twitter")
 
@@ -21,15 +21,11 @@ dbC = Database(dataSource)
 # dbD = Database(dataSource)
 dbP = Database(dataSource)
 dbR = Database(dataSource)
-dbS = Database(dataSource)
-dbZ = Database(dataSource)
 
 compteDao = CompteDao(dbC)
 # dateDao = DateDao(dbD)
 postDao = PostDao(dbP)
 reactionDao = ReactionDao(dbR)
-subjectDao = SubjectDao(dbS)
-zoneGeoDao = ZoneGeoDao(dbZ)
 
 
 def runSaveInSQL():
@@ -58,7 +54,7 @@ def runSaveInSQL():
         # ID_Post, text, URL, ID_externe_tweet, classe,confidence,date,
         # ID_Subject,ID_Compte,ID_Reaction, ID_Zone_geo
         rowP = [a['text'], a['url'], a['id_Tweet'], a['is_fake'], a['confidance'],
-                a['tweet_created_at'], 0, idCompte, idReaction, 0]
+                a['tweet_created_at'], idCompte, idReaction]
         idPost = postDao.addPost(rowP)
     fl.close()
     os.remove(fileName)
@@ -78,12 +74,17 @@ def saveInJson(article_list):
     for a in article_list:
         try :
             user = get_User(a['poster_user_tag'][1:])
-            print(user)
+            try:
+                print(user)
+            except: None
             tweet = get_Tweet(a['tweet_id'].split('/')[-1])
-            print(tweet)
+            try:
+                print(tweet)
+            except: None
             post = {**user, **tweet,
                     'url': 'https://twitter.com/' + user['username'] + '/statuses/' + str(tweet['id_Tweet']),
                     'confidance': float(a['msg_res'][13:19]), "is_fake": a["is_fake"]}
+            print()
             json.dump(post, f)
             f.write("\n")
         except : None

@@ -8,11 +8,12 @@ class PostDao(object):
         self.__fieldId = "ID_Post"
         self.__lastId = db.getMaxId(self.__tableName, self.__fieldId) + 1
     def addPost(self, row):
+        print("add post")
         res = self.__db.insert(self.__tableName, [self.__lastId] + row)
-        print("fghjkl", res)
+        print("res post", res)
         if res == 1:
             self.__lastId += 1
-            print("bien")
+            print("post bien")
             return self.__lastId - 1
-        print("mal")
+        print("post mal")
         return 0

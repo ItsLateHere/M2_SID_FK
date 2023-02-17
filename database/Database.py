@@ -42,13 +42,17 @@ class Database(object):
                 query += ind + "%s"
                 ind = ', '
             query += ")"
+            print(query)
+#            print(row)
             cursor.execute(query, tuple(row))
+            self.__db.commit()
             res = cursor.rowcount
-            print(cursor.rowcount, "Record inserted successfully into authors table")
+            print(cursor.rowcount, "Record inserted successfully into "+tableName+ "table")
             cursor.close()
             return res
 
         except mysql.connector.Error as error:
+            print(error)
             print("Failed to insert record into " + tableName + "table {}".format(error))
 
     def getMaxId(self, tableName, field):

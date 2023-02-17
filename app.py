@@ -14,4 +14,4 @@ def hello_world():  # put application's code here
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", ssl_context=('data/certificates/fullchain1.pem','data/certificates/privkey1.pem'))
+    app.run()
