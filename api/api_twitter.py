@@ -1,13 +1,21 @@
+# Récupérer les données à partir de l'API TWITTER
+
 import tweepy
 from api.config.config_twitter import *
 
 from datetime import datetime
-
 client = tweepy.Client(bearer_token=BEARER_TOKEN)
+
+# cette fonction récupère toutes les données d'un compte Twitter à partir du nom d'utilisateur(username :'UNIQUE') comme:
+#       - le nom d'utilisateur
+#       - date de création du compte
+#       - nombre des followers
+#       - le compte privé ou non
+#       - compte vérifier ou non
+#       ....
 
 
 def get_User(username):
-    print(username)
     res = client.get_user(
         username=username,
         user_fields=[
@@ -27,7 +35,14 @@ def get_User(username):
     }
     return compte
 
-
+# cette fonction récupère toutes les données d'un tweet à partir de l'Id de la publication comme:
+#       - date création de la publication
+#       - la publication
+#       - nombre des likes
+#       - nombre des commentaires
+#       - nombre des retweets
+#       - nombre des followers
+#       ....
 def get_Tweet(idTweet):
     res = client.get_tweet(
         id=idTweet,

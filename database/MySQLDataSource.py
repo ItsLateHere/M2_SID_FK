@@ -1,7 +1,8 @@
 import mysql.connector
-
+# La classe MySQLDataSource il fait la connexion avec la base de données MySQL
+# pour que l'application puisse de sauvegarder les données dans la base de données transactionnelles
 class MySQLDataSource(object):
-    __host = "83.115.75.78"
+    __host =  "83.115.75.78"
     __user = "fk"
     __password = "fk"
     def __init__(self, databaseName = ""):

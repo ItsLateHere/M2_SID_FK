@@ -1,5 +1,7 @@
 from database.MySQLDataSource import *
 
+# Le rôle de la classe Database, c'est d'exécuter le requête SQL comme
+# INSERT et SELECT afin d'ajouter ou de récupérer des lignes
 
 class Database(object):
     def __init__(self, dataSource=None):
@@ -9,8 +11,6 @@ class Database(object):
         if dataSource != None:
             self.__dataSource = dataSource
             self.__db = dataSource.getConnection()
-            if self.__db.is_connected():
-                print("ghjkl")
         else:
             self.__dataSource = None
             self.__db = None
@@ -42,12 +42,10 @@ class Database(object):
                 query += ind + "%s"
                 ind = ', '
             query += ")"
-            print(query)
-#            print(row)
             cursor.execute(query, tuple(row))
             self.__db.commit()
             res = cursor.rowcount
-            print(cursor.rowcount, "Record inserted successfully into "+tableName+ "table")
+            print(cursor.rowcount, "Record inserted successfully into " + tableName + " table")
             cursor.close()
             return res
 
