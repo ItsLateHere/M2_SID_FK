@@ -22,7 +22,7 @@ import string
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-class SVM:
+class classifier:
     #filename = "C:\\Users\\Abderrahim\\PycharmProjects\\M2_SID_FK\\model\\classifier.sav"
     filename = os.path.dirname(os.path.realpath(__file__))+"\\classifier.sav"
     def wordopt(self, text):
@@ -144,5 +144,5 @@ class SVM:
 # pickle.dump(clf, open(filename, 'w+b'))
 
 if __name__ == '__main__':
-    svm=SVM()
-    svm.train()
+    clf=classifier()
+    clf.train()

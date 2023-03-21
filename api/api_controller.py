@@ -1,6 +1,6 @@
 # Endpoints of the app
 from flask import Flask, request, jsonify, Blueprint
-from model.classifier import SVM
+from model.classifier import classifier
 from controllers.tweet_controller import saveTweets
 
 api_controller = Blueprint('api_controller', __name__)
@@ -12,7 +12,7 @@ tweets = [
 
 @api_controller.route("/api/inputTest", methods=['POST'])
 def input_is_fake():
-    svm = SVM()
+    svm = classifier()
     request_data = request.get_json()
 
     result = svm.predict(svm.wordopt(request_data["tweet_text"]))
@@ -28,14 +28,14 @@ def input_is_fake():
 
 @api_controller.route("/api/faketest", methods=['POST'])
 def is_fake():
-    #try:
+    try:
         co_fake = 0
-        svm = SVM()
+        svm = classifier()
         request_data = request.get_json()
         try:
             print(request_data)
         except:
-            None
+            print("Failed to request data")
         for a in request_data:
             a["tweet_text"]=svm.wordopt(a["tweet_text"])
             result = svm.predict(a["tweet_text"])
@@ -51,7 +51,7 @@ def is_fake():
 
         saveTweets(request_data)
         return response_format(request_data, co_fake, 200)
-    #finally:
+    except: print("Oups")
 
 
 
